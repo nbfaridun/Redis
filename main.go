@@ -48,7 +48,7 @@ func bruteDefender(tokenID string, requestID string, password string) error {
 
 	if intAttempt != 3 {
 		intAttempt++
-		rdb.Set(ctx, userKey, intAttempt, 10 * time.Minute)
+		rdb.Set(ctx, userKey, intAttempt, 10*time.Minute)
 	} else {
 		isBlocked = 1
 	}
@@ -63,6 +63,10 @@ func bruteDefender(tokenID string, requestID string, password string) error {
 		sugarLogger.Error(infoMsg + "Error Wrong Password!")
 	}
 	return err
+}
+
+func intToString(value int) string {
+	return strconv.Itoa(value)
 }
 
 func InitLogger() {
@@ -83,12 +87,12 @@ func getEncoder() zapcore.Encoder {
 }
 
 func getLogWriter() zapcore.WriteSyncer {
-	lumberJackLogger := &lumberjack.Logger {
-		Filename: "app.log",
-		MaxSize: 1,
+	lumberJackLogger := &lumberjack.Logger{
+		Filename:   "app.log",
+		MaxSize:    1,
 		MaxBackups: 5,
-		MaxAge: 30,
-		Compress: true,
+		MaxAge:     30,
+		Compress:   true,
 	}
 	return zapcore.AddSync(lumberJackLogger)
 }
@@ -96,7 +100,5 @@ func getLogWriter() zapcore.WriteSyncer {
 func main() {
 	InitLogger()
 	defer sugarLogger.Sync()
-
 	bruteDefender("token056", "request272", "mypass")
-
 }
